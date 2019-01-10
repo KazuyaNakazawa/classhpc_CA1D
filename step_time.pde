@@ -14,8 +14,8 @@ void stepTime() {
 int ruleLeft(int left, int me, int right) {
   int meInverse = (me+1) % 2; // 0-->1, 1-->0
 
-  if ( left!=me ) 
-    return meInverse;
+  if ( (left+right)%2==0 ) 
+    return 0;
   else
-    return me;
+    return 1;
 }
