@@ -4,18 +4,18 @@ void stepTime() {
     int me = cellsCarbonCopy[i];
     int left = cellsCarbonCopy[i-1];
     int right = cellsCarbonCopy[i+1];
-    cells[i] = ruleLeft(left,me,right);
+    //cells[i] = rule30(left,me,right);
+    cells[i] = rule90(left,me,right);
   }
   boundaryCondition();
   copyCells();
 }
 
 
-int ruleLeft(int left, int me, int right) {
-  int meInverse = (me+1) % 2; // 0-->1, 1-->0
+int rule30(int left, int me, int right) {
+  return (left+me+right+me*right) % 2;
+}
 
-  if ( (left+right)%2==0 ) 
-    return 0;
-  else
-    return 1;
+int rule90(int left, int me, int right) {    
+  return (left+right)%2;
 }

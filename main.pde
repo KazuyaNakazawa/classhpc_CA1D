@@ -1,5 +1,6 @@
 // CA1D
 //    - A 1-D cellular automaton
+//    - Revised from Game-of-Caps program
 //    - by Akira Kageyama
 //    - on 2018.11.25
 
@@ -15,7 +16,7 @@ int interval = 200; // increase this for slower view
 // Number of cell in x
 int Nx;  // Will be set from the window width and cellSize.
 
-// Alice cell density for random distribution (in percentage)
+// How likely for a cell to be alive at start (in percentage)
 float probabilityOfAliveAtStart = 15;
 
 // A variable to monitor the elapsed time
@@ -33,7 +34,8 @@ boolean pause = true;
 
 
 void setup() {
-  size (640, 100);
+  // size (640, 360);
+  size (1200, 100);
   Nx = width / cellSize;
   println("Nx = ", Nx);
   println("Space=>stop/start. 'c'=>clear, 'r'=>random, Return=>one step, Mouse click=>cell reversal.");
@@ -41,23 +43,37 @@ void setup() {
   cells = new int[Nx];
   cellsCarbonCopy = new int[Nx];
 
-  // Gray curve around each circle.
+  // No stroke around each circle.
+  //noStroke();
   stroke(100);
 
   // Anti-aliasing
   smooth(8);
 
+  //// Initialization (random)
+  //for (int i=1; i<Nx-1; i++) {
+  //    float state = random (100);
+  //    if (state > probabilityOfAliveAtStart) { 
+  //      sta te = 0;
+  //    } else {
+  //      state = 1;
+  //    }
+  //    cells[i] = int(state); // Save state of each cell
+  //}
+
   // Initialization (only one alive cell)
   for (int i=1; i<Nx-1; i++) {
-    if (i==Nx/2) { 
-      cells[i] = 1; // Alive
-    } else {
-      cells[i] = 0; // Dead
-    }
+      if (i==Nx/2) { 
+        cells[i] = 1; // Alive
+      } else {
+        cells[i] = 0; // Dead
+      }
   }
 
   boundaryCondition();
   copyCells();
+
+  //background(210, 220, 250);
 }
 
 
@@ -66,13 +82,13 @@ void keyPressed() {
   if (key=='r' || key == 'R') {
     // Restart: reinitialization of cells
     for (int i=1; i<Nx-1; i++) {
-      float state = random (100);
-      if (state > probabilityOfAliveAtStart) {
-        state = 0;
-      } else {
-        state = 1;
-      }
-      cells[i] = int(state); // Save state of each cell
+        float state = random (100);
+        if (state > probabilityOfAliveAtStart) {
+          state = 0;
+        } else {
+          state = 1;
+        }
+        cells[i] = int(state); // Save state of each cell
     }
     boundaryCondition();
     copyCells();
@@ -82,8 +98,8 @@ void keyPressed() {
   }
   if (key=='c' || key == 'C') { // Clear all
     for (int i=0; i<Nx; i++) {
-      cells[i] = 0; // Save all to zero
-    }
+        cells[i] = 0; // Save all to zero
+      }
   }
   if (key=='\n') {
     stepTime();
